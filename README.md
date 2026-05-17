@@ -1,159 +1,73 @@
-# Turborepo starter
+# Enterprise Monorepo
 
-This Turborepo starter is maintained by the Turborepo core team.
+Welcome to the **Enterprise Monorepo**, a modern, scalable repository built to manage multiple front-end applications, a backend API, and shared internal packages seamlessly. This project leverages the latest tooling to provide an excellent developer experience, fast build times, and high maintainability.
 
-## Using this example
+## 🛠️ Tooling & Tech Stack
 
-Run the following command:
+This repository is powered by a robust stack of modern development tools:
 
-```sh
-npx create-turbo@latest
-```
+- **[Turborepo](https://turbo.build/repo)**: High-performance build system for JS/TS monorepos, offering remote caching and parallel execution.
+- **[pnpm Workspaces](https://pnpm.io/workspaces)**: Fast, disk space-efficient package manager configured to manage dependencies across all apps and packages.
+- **TypeScript**: End-to-end static typing.
+- **Next.js 16**: React framework used for our main web application and documentation site.
+- **Vite & React 19**: Lightning-fast build tool used for the `blogMore` application.
+- **Express.js**: Fast, unopinionated Node.js web framework for our backend API.
+- **Prettier & ESLint**: Shared configuration for consistent code formatting and linting across the entire workspace.
 
-## What's inside?
+## 🏗️ Repository Structure
 
-This Turborepo includes the following packages/apps:
+### Applications (`apps/`)
 
-### Apps and Packages
+- **`web`** (Next.js): The main customer-facing web application. Runs on port `3000`.
+- **`docs`** (Next.js): Documentation site for internal and external resources. Runs on port `3001`.
+- **`blogMore`** (Vite + React): A dedicated blogging and content management platform. Runs on port `5173`.
+- **`api`** (Express.js): The core backend service providing RESTful endpoints. Uses ES modules and runs via `nodemon`.
 
-- `docs`: a [Next.js](https://nextjs.org/) app
-- `web`: another [Next.js](https://nextjs.org/) app
-- `@repo/ui`: a stub React component library shared by both `web` and `docs` applications
-- `@repo/eslint-config`: `eslint` configurations (includes `eslint-config-next` and `eslint-config-prettier`)
-- `@repo/typescript-config`: `tsconfig.json`s used throughout the monorepo
+### Shared Packages (`packages/`)
 
-Each package/app is 100% [TypeScript](https://www.typescriptlang.org/).
+- **`@repo/ui`**: Shared React component library consumed by `web` and other front-end apps.
+- **`@repo/utils`**: Shared helper functions and business logic.
+- **`@repo/eslint-config`**: Standardized ESLint rules for all workspace projects.
+- **`@repo/typescript-config`**: Base `tsconfig.json` files for consistent strictness and compilation settings.
 
-### Utilities
+## ✅ What is Done
 
-This Turborepo has some additional tools already setup for you:
+- **Monorepo Architecture**: Initialized pnpm workspaces and Turborepo configurations (`pnpm-workspace.yaml`, `turbo.json`).
+- **Application Scaffolding**: Set up two Next.js apps (`web`, `docs`), one Vite app (`blogMore`), and an Express backend (`api`).
+- **Internal Package Linking**: Configured dependencies so applications can natively import from `@repo/ui` and `@repo/utils`.
+- **Tooling Standardization**: Integrated Prettier and ESLint globally with workspace-specific extensions.
+- **API Environment Fixes**: Successfully migrated the `api` app to ES modules (`"type": "module"`) and corrected workspace linking to allow smooth execution via `turbo run dev`.
 
-- [TypeScript](https://www.typescriptlang.org/) for static type checking
-- [ESLint](https://eslint.org/) for code linting
-- [Prettier](https://prettier.io) for code formatting
+## 🚀 What is Upcoming
 
-### Build
+- **API & Frontend Integration**: Connect the `web` and `blogMore` applications to the local Express `api` service.
+- **Database Integration**: Add ORM setup (e.g., Prisma or Drizzle) and database migrations to the `api` package.
+- **UI Library Expansion**: Build out accessible, reusable components in `@repo/ui` using Storybook or a similar testing playground.
+- **CI/CD Pipeline**: Set up GitHub Actions for automated linting, type-checking, and Turborepo remote caching on PRs.
+- **Dockerization & Deployment**: Create `Dockerfile`s for each application to prepare for production deployments on Vercel (frontend) and AWS/Render (backend).
 
-To build all apps and packages, run the following command:
+## 💻 Getting Started
 
-With [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation) installed (recommended):
+To run the project locally, ensure you have Node.js (>=18) and `pnpm` installed.
 
-```sh
-cd my-turborepo
-turbo build
-```
+1. **Install dependencies:**
+   ```bash
+   pnpm install
+   ```
 
-Without global `turbo`, use your package manager:
+2. **Start the development server:**
+   ```bash
+   pnpm run dev
+   ```
+   *This command leverages Turborepo to start all applications (`web`, `docs`, `blogMore`, and `api`) simultaneously in parallel.*
 
-```sh
-cd my-turborepo
-npx turbo build
-pnpm dlx turbo build
-pnpm exec turbo build
-```
+3. **Format code:**
+   ```bash
+   pnpm run format
+   ```
 
-You can build a specific package by using a [filter](https://turborepo.dev/docs/crafting-your-repository/running-tasks#using-filters):
-
-With [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation) installed:
-
-```sh
-turbo build --filter=docs
-```
-
-Without global `turbo`:
-
-```sh
-npx turbo build --filter=docs
-pnpm exec turbo build --filter=docs
-pnpm exec turbo build --filter=docs
-```
-
-### Develop
-
-To develop all apps and packages, run the following command:
-
-With [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation) installed (recommended):
-
-```sh
-cd my-turborepo
-turbo dev
-```
-
-Without global `turbo`, use your package manager:
-
-```sh
-cd my-turborepo
-npx turbo dev
-pnpm exec turbo dev
-pnpm exec turbo dev
-```
-
-You can develop a specific package by using a [filter](https://turborepo.dev/docs/crafting-your-repository/running-tasks#using-filters):
-
-With [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation) installed:
-
-```sh
-turbo dev --filter=web
-```
-
-Without global `turbo`:
-
-```sh
-npx turbo dev --filter=web
-pnpm exec turbo dev --filter=web
-pnpm exec turbo dev --filter=web
-```
-
-### Remote Caching
-
-> [!TIP]
-> Vercel Remote Cache is free for all plans. Get started today at [vercel.com](https://vercel.com/signup?utm_source=remote-cache-sdk&utm_campaign=free_remote_cache).
-
-Turborepo can use a technique known as [Remote Caching](https://turborepo.dev/docs/core-concepts/remote-caching) to share cache artifacts across machines, enabling you to share build caches with your team and CI/CD pipelines.
-
-By default, Turborepo will cache locally. To enable Remote Caching you will need an account with Vercel. If you don't have an account you can [create one](https://vercel.com/signup?utm_source=turborepo-examples), then enter the following commands:
-
-With [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation) installed (recommended):
-
-```sh
-cd my-turborepo
-turbo login
-```
-
-Without global `turbo`, use your package manager:
-
-```sh
-cd my-turborepo
-npx turbo login
-pnpm exec turbo login
-pnpm exec turbo login
-```
-
-This will authenticate the Turborepo CLI with your [Vercel account](https://vercel.com/docs/concepts/personal-accounts/overview).
-
-Next, you can link your Turborepo to your Remote Cache by running the following command from the root of your Turborepo:
-
-With [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation) installed:
-
-```sh
-turbo link
-```
-
-Without global `turbo`:
-
-```sh
-npx turbo link
-pnpm exec turbo link
-pnpm exec turbo link
-```
-
-## Useful Links
-
-Learn more about the power of Turborepo:
-
-- [Tasks](https://turborepo.dev/docs/crafting-your-repository/running-tasks)
-- [Caching](https://turborepo.dev/docs/crafting-your-repository/caching)
-- [Remote Caching](https://turborepo.dev/docs/core-concepts/remote-caching)
-- [Filtering](https://turborepo.dev/docs/crafting-your-repository/running-tasks#using-filters)
-- [Configuration Options](https://turborepo.dev/docs/reference/configuration)
-- [CLI Usage](https://turborepo.dev/docs/reference/command-line-reference)
+4. **Lint and Type-check:**
+   ```bash
+   pnpm run lint
+   pnpm run check-types
+   ```
